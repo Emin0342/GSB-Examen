@@ -1,17 +1,18 @@
-Features 3 GSB (Trotinette)
+
+<h1 align="center">Features 3 GSB (Trotinette)</h1>
 
 
-Fichier a modifier
-
-
-
-
-c_connexion.php : 
+<h2>Fichier a modifier</h2>
 
 
 
+<h1> c_connexion.php : </h1>
+ 
 
-else{
+
+
+```php
+# else{
 			$id = $visiteur['id'];
 			$nom =  $visiteur['nom'];
 			$prenom = $visiteur['prenom'];
@@ -22,20 +23,11 @@ else{
 			include("vues/v_sommaire.php");
 		}
 
+```
 
+<h1> class.pdogsb.inc.php :  </h1>
 
-
-
-
-
-
-
-class.pdogsb.inc.php : 
-
-
-
-
-
+```php
 public function getInfosVisiteur($login, $mdp){
 		$req = "SELECT Visiteur.nom as nom, Visiteur.prenom as prenom, Trottinette.id as id, Trottinette.modele
 		as modele, trottinette.vitesseMax as vitesseMax, trottinette.autonomie as autonomie from Visiteur
@@ -45,20 +37,14 @@ public function getInfosVisiteur($login, $mdp){
 		$ligne = $rs->fetch();
 		return $ligne;
 	}
+```
+
+
+<h1> fct.inc.php : </h1>
 
 
 
-
-
-
-
-
-
-fct.inc.php : 
-
-
-
-
+```php
 function connecter($id,$nom,$prenom,$modele,$vitesseMax,$autonomie){
 	$_SESSION['idVisiteur']= $id; 
 	$_SESSION['nom']= $nom;
@@ -68,47 +54,41 @@ function connecter($id,$nom,$prenom,$modele,$vitesseMax,$autonomie){
 	$_SESSION['autonomie']= $autonomie;
 
 }
+```
+
+<h1> v_sommaire.php :  </h1>
 
 
 
-
-
-
-
-v_sommaire.php : 
-
-
-
-
-
+```php
+<br>
+         <li>
+		<b>Modele de la trottinette :</b><br>
+		<?php echo $_SESSION['modele']?>
+	 </li>
 <br>
          <li >
-				  <b>Modele de la trottinette :</b><br>
-				<?php echo $_SESSION['modele']?>
-			</li>
+		<b>VitesseMax de la trottinette :</b><br>
+		<?php echo $_SESSION['vitesseMax']?>
+	 </li>
 <br>
          <li >
-				  <b>VitesseMax de la trottinette :</b><br>
-				<?php echo $_SESSION['vitesseMax']?>
-			</li>
+		<b>Autonomie de la trottinette :</b><br>
+		<?php echo $_SESSION['autonomie'] ?> mAh
+	 </li>
 <br>
-         <li >
-				  <b>Autonomie de la trottinette :</b><br>
-				<?php echo $_SESSION['autonomie'] ?> mAh
-			</li>
-<br>
-
+```
 
 A INSERER EN DESSOUS DE LA LIGNE : 
 
 
-
-			<li >
-				  Visiteur :<br>
-				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
-			</li>
-
-
-
+```php
+<li >
+	Visiteur :<br>
+	<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
+</li>
+```
 
 
+
+SI SA MARCHE PAS REARDER LE DOSSIER FEATURES 3 GSB SUR NOTION
