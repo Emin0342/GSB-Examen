@@ -1,0 +1,103 @@
+<?php
+session_start();
+
+if($_POST){
+    if(isset($_POST['id']) && !empty($_POST['id'])){
+        require_once('connect.php');
+        var_dump ($_GET);
+        var_dump ($_POST);
+        $id = strip_tags($_POST['id']);
+        $visiteur = strip_tags($_GET['visiteur']);
+        $mois = strip_tags($_GET['mois']);
+
+
+        $sql = 'UPDATE `fichefrais` SET `idEtat`=:id WHERE `idVisiteur`=:visiteur and `mois`=:mois; ';
+
+        $query = $db->prepare($sql);
+
+        $query->bindValue(':id', $id,  PDO::PARAM_STR);
+        $query->bindValue(':visiteur', $visiteur,  PDO::PARAM_STR);
+        $query->bindValue(':mois', $mois,  PDO::PARAM_STR);
+
+        $query->execute();
+
+        $_SESSION['message'] = "État modifié";
+        require_once('close.php');
+        header('Location: index.php');
+        
+    }
+} else { 
+
+    if(isset($_GET['visiteur']) && !empty($_GET['visiteur']) && isset($_GET['mois']) && !empty($_GET['mois'])){
+        require_once('connect.php');
+    
+        $visiteur = strip_tags($_GET['visiteur']);
+        $mois = strip_tags($_GET['mois']);
+    
+        $sql = 'SELECT * FROM `Etat`';
+    
+        $query = $db->prepare($sql);
+    
+        $query->execute();
+    
+        $libelle = $query->fetchAll();
+    
+        /*if(!$libelle){
+            $_SESSION['erreur'] = "Cet id n'existe pas";
+            header('Location: index.php');
+        }*/
+    }else{
+        $_SESSION['erreur'] = "URL invalide";
+        header('Location: index.php');
+    }
+
+}
+
+
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un libelle</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <main class="container">
+        <div class="row">
+            <section class="col-12">
+                <?php
+                    if(!empty($_SESSION['erreur'])){
+                        echo '<div class="alert alert-danger" role="alert">
+                                '. $_SESSION['erreur'].'
+                            </div>';
+                        $_SESSION['erreur'] = "";
+                    }
+                ?>
+                <h1>Modifier l'état d'une fiche</h1>
+                <br>
+                <form method="post">
+                    
+                    <div class="form-group">
+                      
+                        <select name="id">
+                            <?php 
+                            foreach ($libelle as $libbb) { ?>
+                            <option><?= $libbb['id'] ?> (<?= $libbb['libelle'] ?>) </option>
+
+                            <?php
+                            }
+                            ?>
+                        </select>
+                       
+                        <input type ="submit"></input>
+                    </div>
+                    
+                </form>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
